@@ -1,0 +1,83 @@
+#bg{
+  z-index:-50;
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  top:0px;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  background-image: url("https://cdn.jsdelivr.net/gh/ItsFoxDev/FoxClient/launcherbg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#bgb{
+  z-index: -49;
+  top:0px;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  backdrop-filter:blur(3px);
+}
+body{
+  margin:0px;
+}
+#title{
+  font-size:45px;
+  margin:20px 0px 0px 0px;
+}
+#sub{
+  font-size:20px;
+  margin:0px 0px 10px 0px;
+}
+h1,h2{
+  font-family:Lexend;
+  color:white;
+  text-align:center;
+}
+
+#box{
+  border-radius:5px;
+  width:600px;
+  height:400px;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(20px);
+}
+#boxc{
+  width:100vw;
+  height:100vh;
+  display:grid;
+  align-content:center;
+  justify-content:center;
+}
+
+button{
+  border:1px solid white;
+  padding:10px;
+  background:transparent;
+  font-family:Lexend;
+  color:white;
+  font-size:14px;
+  transition: all .3s;
+  cursor:pointer;
+}
+
+#btns{
+  margin-top:20px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+button:hover{
+  background:white;
+  color:black;
+  border-radius:5px;
+}
+img:hover{
+  border-radius:5px;
+}
