@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
 #bg{
   z-index:-50;
   width:100vw;
@@ -80,4 +81,31 @@ button:hover{
 }
 img:hover{
   border-radius:5px;
+}
+
+
+#animc{
+  display:flex;
+  align-content:center;
+  justify-content: center;
+  align-items:center;
+  position:fixed;
+  inset:0px;
+  background:white;
+  z-index:450;
+  overflow:hidden;
+  transition:height .3s cubic-bezier(.47,.04,.92,.16);
+}
+#animi{
+  width:128px;
+  height:128px;
+  transition:all .3s ease-out;
+}
+
+#animt{
+  color:#ff7816;
+  font-family:Montserrat;
+  font-size:60px;
+  overflow:hidden;
+  transition:all .3s ease-in-out;
 }
