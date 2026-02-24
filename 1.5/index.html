@@ -1,9 +1,2281 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; URL=https://itsfoxdev.github.io/FoxClient/" />
-  </head>
-  <body>
-    This website has moved! Taking you to the <a href="https://itsfoxdev.github.io/FoxClient">new site</a> now...
-  </body>
-</html>
+
+import pyautogui
+import time
+
+# --- Configuration ---
+# Ensure Citra is in focus and set up keybindings (e.g., WASD for movement)
+# This example simulates holding right for 5 seconds to run in a circle
+
+def start_automation():
+    print("Starting in 3 seconds... Switch to emulator!")
+    time.sleep(3)
+    
+    # Example: Move Right (Hold 'd')
+    print("Moving Right...")
+    pyautogui.keyDown('d')
+    time.sleep(5)
+    pyautogui.keyUp('d')
+    
+    # Example: Press 'A' to interact
+    pyautogui.press('a')
+    print("Done")
+
+# start_automation()
+
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Screen Setup
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pokémon Python Clone")
+clock = pygame.time.Clock()
+
+# Player Setup
+player_pos = [WIDTH // 2, HEIGHT // 2]
+player_speed = 5
+
+# Simple Battle System Component
+def battle_loop():
+    print("A wild Pokémon appeared!")
+    # Placeholder for turn-based logic
+    return "Won"
+
+# Main Game Loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Movement Logic
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]: player_pos[0] -= player_speed
+    if keys[pygame.K_RIGHT]: player_pos[0] += player_speed
+    if keys[pygame.K_UP]: player_pos[1] -= player_speed
+    if keys[pygame.K_DOWN]: player_pos[1] += player_speed
+
+    # Rendering
+    screen.fill((0, 150, 0)) # Green background
+    pygame.draw.rect(screen, (0, 0, 255), (player_pos[0], player_pos[1], 30, 30)) # Player
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Constants
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (200, 0, 0)
+GREEN = (0, 200, 0)
+
+# Setup Screen
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Pokémon X/Y Python Clone")
+font = pygame.font.SysFont("Arial", 30)
+
+class Pokemon:
+    def __init__(self, name, hp, attack, defense):
+        self.name = name
+        self.max_hp = hp
+        self.current_hp = hp
+        self.attack = attack
+        self.defense = defense
+
+    def take_damage(self, damage):
+        self.current_hp -= damage
+        if self.current_hp < 0:
+            self.current_hp = 0
+
+    def is_fainted(self):
+        return self.current_hp == 0
+
+def draw_text(text, x, y, color=BLACK):
+    text_obj = font.render(text, True, color)
+    screen.blit(text_obj, (x, y))
+
+def draw_battle_scene(player_poke, enemy_poke, message):
+    screen.fill(WHITE)
+    
+    # Draw Player Pokemon
+    draw_text(f"{player_poke.name}: {player_poke.current_hp}/{player_poke.max_hp} HP", 50, 400)
+    pygame.draw.rect(screen, GREEN, (50, 430, player_poke.current_hp * 2, 20))
+    
+    # Draw Enemy Pokemon
+    draw_text(f"{enemy_poke.name}: {enemy_poke.current_hp}/{enemy_poke.max_hp} HP", 500, 100)
+    pygame.draw.rect(screen, RED, (500, 130, enemy_poke.current_hp * 2, 20))
+    
+    # Draw Message Box
+    pygame.draw.rect(screen, BLACK, (0, 500, SCREEN_WIDTH, 100), 2)
+    draw_text(message, 20, 520)
+    
+    pygame.display.update()
+
+def battle():
+    player = Pokemon("Fennekin", 100, 20, 10)
+    enemy = Pokemon("Bunnelby", 80, 15, 8)
+    
+    running = True
+    message = "A wild Bunnelby appeared! Press SPACE to attack."
+    battle_over = False
+
+    while running:
+        draw_battle_scene(player, enemy, message)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+            if event.type == pygame.KEYDOWN and not battle_over:
+                if event.key == pygame.K_SPACE:
+                    # Player Attack
+                    damage = max(5, player.attack - random.randint(0, 5))
+                    enemy.take_damage(damage)
+                    message = f"{player.name} dealt {damage} damage!"
+                    
+                    if enemy.is_fainted():
+                        message = "Bunnelby fainted! You win!"
+                        battle_over = True
+                    else:
+                        # Enemy Turn
+                        draw_battle_scene(player, enemy, message)
+                        pygame.time.wait(1000)
+                        
+                        enemy_damage = max(3, enemy.attack - random.randint(0, 3))
+                        player.take_damage(enemy_damage)
+                        message = f"Bunnelby dealt {enemy_damage} damage!"
+                        
+                        if player.is_fainted():
+                            message = "Fennekin fainted... Game Over."
+                            battle_over = True
+                            
+    pygame.quit()
+
+if __name__ == "__main__":
+    battle()
+
+import pypokedex
+
+# Fetch a Pokémon by name or National Dex number
+pokemon = pypokedex.get(name="greninja")
+
+print(f"Name: {pokemon.name}")
+print(f"Dex Number: {pokemon.dex}")
+print(f"Types: {pokemon.types}")
+print(f"Base Stats: {pokemon.base_stats}")
+
+def battle(p1_name, p1_power, p2_name, p2_power):
+    if p1_power > p2_power:
+        return f"{p1_name} wins!"
+    elif p2_power > p1_power:
+        return f"{p2_name} wins!"
+    else:
+        return "It's a draw!"
+
+# Example using Kalos Pokémon
+print(battle("Greninja", 95, "Delphox", 69))
+
+import random
+
+# Type effectiveness chart
+type_chart = {
+    "Fire": {"Grass": 2, "Water": 0.5, "Fire": 1},
+    "Water": {"Fire": 2, "Grass": 0.5, "Water": 1},
+    "Grass": {"Water": 2, "Fire": 0.5, "Grass": 1}
+}
+
+class Move:
+    def __init__(self, name, power, move_type):
+        self.name = name
+        self.power = power
+        self.type = move_type
+
+class Pokemon:
+    def __init__(self, name, hp, attack, ptype, moves):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.attack = attack
+        self.type = ptype
+        self.moves = moves
+        self.level = 1
+        self.xp = 0
+
+    def is_alive(self):
+        return self.hp > 0
+
+    def attack_target(self, move, target):
+        effectiveness = type_chart.get(move.type, {}).get(target.type, 1)
+        damage = int((self.attack + move.power) * effectiveness * random.uniform(0.8, 1.2))
+        target.hp -= damage
+
+        print(f"{self.name} used {move.name}!")
+        if effectiveness > 1:
+            print("It's super effective!")
+        elif effectiveness < 1:
+            print("It's not very effective...")
+        print(f"{target.name} took {damage} damage!")
+
+    def gain_xp(self, amount):
+        self.xp += amount
+        if self.xp >= 50:
+            self.level += 1
+            self.attack += 5
+            self.max_hp += 10
+            self.hp = self.max_hp
+            self.xp = 0
+            print(f"{self.name} leveled up to level {self.level}!")
+
+# Moves
+ember = Move("Ember", 10, "Fire")
+water_gun = Move("Water Gun", 10, "Water")
+vine_whip = Move("Vine Whip", 10, "Grass")
+
+# Player team
+player_team = [
+    Pokemon("Charmander", 100, 15, "Fire", [ember]),
+    Pokemon("Squirtle", 110, 13, "Water", [water_gun]),
+    Pokemon("Bulbasaur", 105, 14, "Grass", [vine_whip])
+]
+
+# Enemy
+enemy = Pokemon("Wild Bulbasaur", 100, 14, "Grass", [vine_whip])
+
+def choose_pokemon(team):
+    print("\nChoose your Pokémon:")
+    for i, p in enumerate(team):
+        print(f"{i+1}. {p.name} (HP: {p.hp})")
+    choice = int(input("> ")) - 1
+    return team[choice]
+
+active = choose_pokemon(player_team)
+
+# Battle loop
+while active.is_alive() and enemy.is_alive():
+    print(f"\n{active.name} HP: {active.hp} | {enemy.name} HP: {enemy.hp}")
+    
+    print("1. Attack")
+    print("2. Switch Pokémon")
+    action = input("> ")
+
+    if action == "1":
+        move = active.moves[0]
+        active.attack_target(move, enemy)
+
+        if enemy.is_alive():
+            enemy.attack_target(enemy.moves[0], active)
+
+    elif action == "2":
+        active = choose_pokemon(player_team)
+        continue
+
+    if not enemy.is_alive():
+        print("You defeated the wild Pokémon!")
+        active.gain_xp(50)
+        break
+
+    if not active.is_alive():
+        print(f"{active.name} fainted!")
+        alive_team = [p for p in player_team if p.is_alive()]
+        if alive_team:
+            active = choose_pokemon(alive_team)
+        else:
+            print("All your Pokémon fainted! Game over.")
+            break
+
+import pygame
+import random
+import sys
+
+pygame.init()
+
+# Screen
+WIDTH, HEIGHT = 800, 500
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pokémon Battle")
+
+font = pygame.font.SysFont(None, 30)
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 200, 0)
+RED = (200, 0, 0)
+
+# Pokémon class
+class Pokemon:
+    def __init__(self, name, hp, attack):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.attack = attack
+
+    def is_alive(self):
+        return self.hp > 0
+
+    def attack_target(self, target):
+        damage = random.randint(self.attack - 5, self.attack + 5)
+        target.hp -= damage
+        return damage
+
+# Create Pokémon
+player = Pokemon("Pikachu", 100, 20)
+enemy = Pokemon("Charmander", 100, 18)
+
+# Button
+attack_button = pygame.Rect(50, 400, 200, 50)
+
+def draw_hp_bar(x, y, hp, max_hp):
+    ratio = hp / max_hp
+    pygame.draw.rect(screen, RED, (x, y, 200, 20))
+    pygame.draw.rect(screen, GREEN, (x, y, 200 * ratio, 20))
+
+def draw_text(text, x, y):
+    img = font.render(text, True, BLACK)
+    screen.blit(img, (x, y))
+
+# Game loop
+running = True
+player_turn = True
+message = "Click ATTACK!"
+
+while running:
+    screen.fill(WHITE)
+
+    # Draw Pokémon (just rectangles for now)
+    pygame.draw.rect(screen, BLACK, (100, 200, 100, 100))  # player
+    pygame.draw.rect(screen, BLACK, (600, 100, 100, 100))  # enemy
+
+    # HP bars
+    draw_hp_bar(100, 180, player.hp, player.max_hp)
+    draw_hp_bar(600, 80, enemy.hp, enemy.max_hp)
+
+    # Names
+    draw_text(player.name, 100, 150)
+    draw_text(enemy.name, 600, 50)
+
+    # Button
+    pygame.draw.rect(screen, GREEN, attack_button)
+    draw_text("ATTACK", 100, 415)
+
+    # Message
+    draw_text(message, 300, 400)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if attack_button.collidepoint(event.pos) and player_turn:
+                damage = player.attack_target(enemy)
+                message = f"You dealt {damage} damage!"
+                player_turn = False
+
+    # Enemy turn
+    if not player_turn and enemy.is_alive():
+        pygame.time.delay(500)
+        damage = enemy.attack_target(player)
+        message = f"Enemy dealt {damage} damage!"
+        player_turn = True
+
+    # Check win/lose
+    if not enemy.is_alive():
+        message = "You win!"
+    if not player.is_alive():
+        message = "You lose!"
+
+    pygame.display.update()
+
+pip install pygame
+
+import pygame
+import random
+import sys
+
+pygame.init()
+
+WIDTH, HEIGHT = 800, 500
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Mini Pokémon Game")
+
+font = pygame.font.SysFont(None, 28)
+
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+GREEN = (0,200,0)
+RED = (200,0,0)
+BLUE = (0,100,255)
+
+# =========================
+# POKEMON CLASS
+# =========================
+class Pokemon:
+    def __init__(self, name, hp, attack):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.attack = attack
+
+    def is_alive(self):
+        return self.hp > 0
+
+    def attack_target(self, target):
+        dmg = random.randint(self.attack-5, self.attack+5)
+        target.hp -= dmg
+        return dmg
+
+# =========================
+# GAME STATE
+# =========================
+player_pos = [100, 100]
+speed = 5
+
+mode = "overworld"  # overworld / battle
+
+player_team = [Pokemon("Pikachu", 100, 20)]
+enemy = None
+
+pokeballs = 5
+
+# =========================
+# FUNCTIONS
+# =========================
+def draw_text(text, x, y):
+    img = font.render(text, True, BLACK)
+    screen.blit(img, (x,y))
+
+def draw_hp_bar(x,y,hp,max_hp):
+    ratio = hp / max_hp
+    pygame.draw.rect(screen, RED, (x,y,200,20))
+    pygame.draw.rect(screen, GREEN, (x,y,200*ratio,20))
+
+def start_battle():
+    global mode, enemy
+    enemy = random.choice([
+        Pokemon("Charmander", 100, 18),
+        Pokemon("Bulbasaur", 100, 16),
+        Pokemon("Squirtle", 100, 17)
+    ])
+    mode = "battle"
+
+def try_catch(enemy):
+    global pokeballs
+    if pokeballs <= 0:
+        return False
+
+    pokeballs -= 1
+
+    chance = 0.3 + (1 - enemy.hp/enemy.max_hp)
+    return random.random() < chance
+
+# =========================
+# MAIN LOOP
+# =========================
+clock = pygame.time.Clock()
+player_turn = True
+message = ""
+
+while True:
+    screen.fill(WHITE)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if mode == "battle" and event.type == pygame.MOUSEBUTTONDOWN:
+            x,y = event.pos
+
+            # Attack button
+            if 50 < x < 200 and 400 < y < 450 and player_turn:
+                dmg = player_team[0].attack_target(enemy)
+                message = f"You dealt {dmg}"
+                player_turn = False
+
+            # Catch button
+            if 250 < x < 400 and 400 < y < 450 and player_turn:
+                if try_catch(enemy):
+                    message = f"You caught {enemy.name}!"
+                    player_team.append(enemy)
+                    mode = "overworld"
+                else:
+                    message = "Failed to catch!"
+                    player_turn = False
+
+            # Run button
+            if 450 < x < 600 and 400 < y < 450:
+                mode = "overworld"
+
+    # =========================
+    # OVERWORLD
+    # =========================
+    if mode == "overworld":
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_w]: player_pos[1] -= speed
+        if keys[pygame.K_s]: player_pos[1] += speed
+        if keys[pygame.K_a]: player_pos[0] -= speed
+        if keys[pygame.K_d]: player_pos[0] += speed
+
+        # Grass area
+        pygame.draw.rect(screen, GREEN, (300,200,200,150))
+
+        # Player
+        pygame.draw.rect(screen, BLUE, (*player_pos, 30,30))
+
+        draw_text("Walk into grass to find Pokémon", 20,20)
+        draw_text(f"Pokéballs: {pokeballs}", 20,50)
+
+        # Random encounter
+        if (300 < player_pos[0] < 500 and 200 < player_pos[1] < 350):
+            if random.random() < 0.02:
+                start_battle()
+
+    # =========================
+    # BATTLE
+    # =========================
+    elif mode == "battle":
+        player = player_team[0]
+
+        # Draw Pokémon
+        pygame.draw.rect(screen, BLUE, (100,250,100,100))
+        pygame.draw.rect(screen, RED, (600,100,100,100))
+
+        draw_text(player.name, 100, 220)
+        draw_text(enemy.name, 600, 70)
+
+        draw_hp_bar(100, 200, player.hp, player.max_hp)
+        draw_hp_bar(600, 50, enemy.hp, enemy.max_hp)
+
+        # Buttons
+        pygame.draw.rect(screen, GREEN, (50,400,150,50))
+        draw_text("ATTACK", 70,415)
+
+        pygame.draw.rect(screen, BLUE, (250,400,150,50))
+        draw_text("CATCH", 270,415)
+
+        pygame.draw.rect(screen, RED, (450,400,150,50))
+        draw_text("RUN", 490,415)
+
+        draw_text(message, 300, 370)
+
+        # Enemy turn
+        if not player_turn and enemy.is_alive():
+            pygame.time.delay(500)
+            dmg = enemy.attack_target(player)
+            message = f"Enemy dealt {dmg}"
+            player_turn = True
+
+        # Win/Lose
+        if not enemy.is_alive():
+            message = "Enemy fainted!"
+            mode = "overworld"
+
+        if not player.is_alive():
+            message = "You fainted! Game Over"
+            pygame.time.delay(1500)
+            pygame.quit()
+            sys.exit()
+
+    pygame.display.update()
+    clock.tick(60)
+
+class Pokemon:
+    def __init__(self, name, hp, attack, level=1, evolution=None):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.attack = attack
+        self.level = level
+        self.xp = 0
+        self.evolution = evolution  # (name, hp, attack)
+
+        self.moves = [
+            {"name": "Quick Attack", "power": 10},
+            {"name": "Strong Hit", "power": 18}
+        ]
+
+    def is_alive(self):
+        return self.hp > 0
+
+    def attack_target(self, move, target):
+        dmg = int((self.attack + move["power"]) * random.uniform(0.8,1.2))
+        target.hp -= dmg
+        return dmg
+
+    def gain_xp(self, amount):
+        self.xp += amount
+        if self.xp >= 50:
+            self.level += 1
+            self.xp = 0
+            self.max_hp += 10
+            self.attack += 3
+            self.hp = self.max_hp
+            print(f"{self.name} leveled up!")
+
+            # Evolution check
+            if self.evolution and self.level >= 3:
+                self.evolve()
+
+    def evolve(self):
+        new_name, new_hp, new_attack = self.evolution
+        print(f"{self.name} evolved into {new_name}!")
+        self.name = new_name
+        self.max_hp = new_hp
+        self.attack = new_attack
+        self.hp = new_hp
+
+tile_size = 40
+map_data = [
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["path","path","path","path","path","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"]
+]
+
+tile_colors = {
+    "grass": (34,139,34),
+    "path": (200,200,200),
+    "town": (210,180,140),
+    "water": (0,191,255)
+}
+
+def draw_map():
+    for y,row in enumerate(map_data):
+        for x,tile in enumerate(row):
+            pygame.draw.rect(
+                screen, 
+                tile_colors[tile], 
+                (x*tile_size, y*tile_size, tile_size, tile_size)
+            )
+
+# Player position in tiles
+player_tile = [3,3]
+
+# Movement keys
+def move_player(keys):
+    global player_tile
+    new_x, new_y = player_tile
+
+    if keys[pygame.K_w]: new_y -= 1
+    if keys[pygame.K_s]: new_y += 1
+    if keys[pygame.K_a]: new_x -= 1
+    if keys[pygame.K_d]: new_x += 1
+
+    # Bounds check
+    if 0 <= new_x < len(map_data[0]) and 0 <= new_y < len(map_data):
+        # Can't walk on water
+        if map_data[new_y][new_x] != "water":
+            player_tile = [new_x,new_y]
+
+pygame.draw.rect(screen, (0,0,255), (player_tile[0]*tile_size, player_tile[1]*tile_size, tile_size, tile_size))
+
+if map_data[player_tile[1]][player_tile[0]] == "grass":
+    if random.random() < 0.05:  # 5% chance each step
+        start_battle()
+
+if map_data[player_tile[1]][player_tile[0]] == "town":
+    draw_text("You are in town. Safe here.", 10, 10)
+
+class Trainer:
+    def __init__(self, name, team, pos):
+        self.name = name
+        self.team = team  # list of Pokémon
+        self.pos = pos  # [x_tile, y_tile]
+        self.active = True  # Can only battle once
+
+    def move_random(self):
+        if not self.active: return
+        dx, dy = random.choice([[0,1],[0,-1],[1,0],[-1,0],[0,0]])  # random move or stay
+        new_x = self.pos[0] + dx
+        new_y = self.pos[1] + dy
+        if 0 <= new_x < len(map_data[0]) and 0 <= new_y < len(map_data):
+            if map_data[new_y][new_x] != "water":  # can't walk on water
+                self.pos = [new_x,new_y]
+
+trainers = [
+    Trainer("Ash", [Pokemon("Charmander", 100, 18)], [5,2]),
+    Trainer("Misty", [Pokemon("Squirtle", 100, 17)], [1,3])
+]
+
+for trainer in trainers:
+    if trainer.active:
+        pygame.draw.rect(screen, (255,0,0), (trainer.pos[0]*tile_size, trainer.pos[1]*tile_size, tile_size, tile_size))
+        draw_text(trainer.name, trainer.pos[0]*tile_size, trainer.pos[1]*tile_size - 20)
+
+for trainer in trainers:
+    trainer.move_random()
+
+for trainer in trainers:
+    if trainer.active:
+        if abs(trainer.pos[0]-player_tile[0]) <= 1 and abs(trainer.pos[1]-player_tile[1]) <= 1:
+            enemy = trainer.team[0]  # start with first Pokémon
+            mode = "battle_trainer"
+            current_trainer = trainer
+            message = f"{trainer.name} challenges you!"
+
+if mode == "battle_trainer":
+    # draw player & enemy as normal
+    # attack buttons same as before
+    # after enemy HP <= 0:
+    if not enemy.is_alive():
+        message = f"You defeated {current_trainer.name}!"
+        player_team[0].gain_xp(50)  # reward XP
+        pokeballs += 2  # reward items
+        current_trainer.active = False
+        mode = "overworld"
+
+class Trainer:
+    def __init__(self, name, team, pos, badge=None):
+        self.name = name
+        self.team = team  # list of Pokémon
+        self.pos = pos  # [x_tile, y_tile]
+        self.active = True  # Can battle only once
+        self.current_index = 0  # Which Pokémon is active
+        self.badge = badge  # Badge given after defeat
+
+    def move_random(self):
+        if not self.active: return
+        dx, dy = random.choice([[0,1],[0,-1],[1,0],[-1,0],[0,0]])
+        new_x = self.pos[0] + dx
+        new_y = self.pos[1] + dy
+        if 0 <= new_x < len(map_data[0]) and 0 <= new_y < len(map_data):
+            if map_data[new_y][new_x] != "water":
+                self.pos = [new_x,new_y]
+
+    def get_active_pokemon(self):
+        if self.current_index < len(self.team):
+            return self.team[self.current_index]
+        return None
+
+    def next_pokemon(self):
+        self.current_index += 1
+
+trainers = [
+    Trainer(
+        "Ash",
+        [Pokemon("Charmander",100,18), Pokemon("Pidgey",80,12)],
+        [5,2],
+        badge="Boulder Badge"
+    ),
+    Trainer(
+        "Misty",
+        [Pokemon("Squirtle",100,17), Pokemon("Staryu",90,14)],
+        [1,3],
+        badge="Cascade Badge"
+    )
+]
+
+if mode == "battle_trainer":
+    player = player_team[0]
+    enemy = current_trainer.get_active_pokemon()
+
+    # Draw battle as before: player/enemy rectangles + HP bars
+
+    # Buttons for moves, catch disabled for trainers
+    # Attack logic
+    if player_turn:
+        for i, move in enumerate(player.moves):
+            if (50 + i*180 < x < 210 + i*180) and (400 < y < 450):
+                dmg = player.attack_target(move, enemy)
+                message = f"{move.name} dealt {dmg}!"
+                player_turn = False
+
+    # Enemy attack
+    if not player_turn and enemy.is_alive():
+        pygame.time.delay(500)
+        enemy_move = enemy.moves[0]
+        dmg = enemy.attack_target(player)
+        message = f"{enemy.name} dealt {dmg}!"
+        player_turn = True
+
+    # Check if enemy fainted
+    if not enemy.is_alive():
+        current_trainer.next_pokemon()
+        next_enemy = current_trainer.get_active_pokemon()
+        if next_enemy:
+            message = f"{current_trainer.name} sends out {next_enemy.name}!"
+        else:
+            message = f"You defeated {current_trainer.name}!"
+            # Rewards
+            for p in player_team:
+                p.gain_xp(50)
+            if current_trainer.badge:
+                message += f" You earned {current_trainer.badge}!"
+            current_trainer.active = False
+            mode = "overworld"
+
+alive_team = [p for p in player_team if p.is_alive()]
+if not player.is_alive() and alive_team:
+    player = alive_team[0]  # auto switch
+elif not alive_team:
+    message = "All your Pokémon fainted! Game Over"
+    pygame.time.delay(1500)
+    pygame.quit()
+    sys.exit()
+
+map_data = [
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["town","town","town","path","gym","grass","grass","grass"],
+    ["path","path","path","path","path","grass","grass","grass"],
+    ["center","grass","grass","grass","grass","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"]
+]
+
+tile_colors.update({
+    "gym": (255,215,0),    # gold
+    "center": (255,192,203) # pink
+})
+
+gym_leaders = [
+    Trainer(
+        "Brock", 
+        [Pokemon("Geodude",80,15), Pokemon("Onix",100,18)], 
+        [4,1], 
+        badge="Boulder Badge"
+    ),
+    Trainer(
+        "Misty", 
+        [Pokemon("Staryu",90,14), Pokemon("Starmie",110,20)], 
+        [1,3], 
+        badge="Cascade Badge"
+    )
+]
+
+for gym in gym_leaders:
+    if player_tile == gym.pos and gym.active:
+        enemy = gym.get_active_pokemon()
+        mode = "battle_trainer"
+        current_trainer = gym
+        message = f"{gym.name}, the Gym Leader, challenges you!"
+
+if map_data[player_tile[1]][player_tile[0]] == "center":
+    draw_text("Welcome to the Pokémon Center! Press H to heal Pokémon.", 10, 10)
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_h]:
+        for p in player_team:
+            p.hp = p.max_hp
+        message = "All your Pokémon have been healed!"
+
+badges = []
+
+# When defeating Gym Leader
+if not enemy.is_alive() and current_trainer.badge:
+    if current_trainer.badge not in badges:
+        badges.append(current_trainer.badge)
+        message += f" You earned the {current_trainer.badge}!"
+
+import pygame, random, sys
+
+pygame.init()
+WIDTH, HEIGHT = 800, 500
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Mini Pokémon RPG")
+font = pygame.font.SysFont(None, 28)
+
+# Colors
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+GREEN = (34,139,34)
+RED = (200,0,0)
+BLUE = (0,0,255)
+GOLD = (255,215,0)
+PINK = (255,192,203)
+GRAY = (200,200,200)
+
+# Map Tiles
+tile_size = 50
+map_data = [
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["town","town","town","path","gym","grass","grass","grass"],
+    ["path","path","path","path","path","grass","grass","grass"],
+    ["center","grass","grass","grass","grass","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"]
+]
+tile_colors = {"grass":GREEN,"path":GRAY,"town":(210,180,140),"gym":GOLD,"center":PINK}
+
+# ===============================
+# POKEMON CLASS
+# ===============================
+class Pokemon:
+    def __init__(self,name,hp,attack,level=1,evolution=None):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.attack = attack
+        self.level = level
+        self.xp = 0
+        self.evolution = evolution
+        self.moves = [{"name":"Quick Attack","power":10},{"name":"Strong Hit","power":18}]
+    
+    def is_alive(self): return self.hp>0
+    def attack_target(self,move,target):
+        dmg = int((self.attack+move["power"])*random.uniform(0.8,1.2))
+        target.hp -= dmg
+        return dmg
+    def gain_xp(self,amount):
+        self.xp += amount
+        if self.xp>=50:
+            self.level+=1
+            self.xp=0
+            self.max_hp+=10
+            self.attack+=3
+            self.hp=self.max_hp
+            print(f"{self.name} leveled up!")
+            if self.evolution and self.level>=3: self.evolve()
+    def evolve(self):
+        new_name,new_hp,new_attack = self.evolution
+        print(f"{self.name} evolved into {new_name}!")
+        self.name = new_name
+        self.max_hp = new_hp
+        self.attack = new_attack
+        self.hp = new_hp
+
+# ===============================
+# TRAINER CLASS
+# ===============================
+class Trainer:
+    def __init__(self,name,team,pos,badge=None):
+        self.name=name
+        self.team=team
+        self.pos=pos
+        self.active=True
+        self.current_index=0
+        self.badge=badge
+    def move_random(self):
+        if not self.active: return
+        dx,dy=random.choice([[0,1],[0,-1],[1,0],[-1,0],[0,0]])
+        new_x = self.pos[0]+dx
+        new_y = self.pos[1]+dy
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data):
+            if map_data[new_y][new_x]!="water": self.pos=[new_x,new_y]
+    def get_active_pokemon(self):
+        if self.current_index<len(self.team): return self.team[self.current_index]
+        return None
+    def next_pokemon(self): self.current_index+=1
+
+# ===============================
+# GAME STATE
+# ===============================
+player_tile = [3,3]
+player_team = [Pokemon("Pikachu",100,20,evolution=("Raichu",130,28))]
+pokeballs = 5
+badges = []
+
+mode = "overworld" # overworld / battle / battle_trainer
+player_turn = True
+message = ""
+
+# Wild Pokémon function
+def get_random_wild():
+    return random.choice([
+        Pokemon("Charmander",100,18,evolution=("Charmeleon",130,25)),
+        Pokemon("Bulbasaur",100,16,evolution=("Ivysaur",130,24)),
+        Pokemon("Squirtle",100,17,evolution=("Wartortle",130,23))
+    ])
+
+# ===============================
+# TRAINERS & GYMS
+# ===============================
+trainers = [
+    Trainer("Ash",[Pokemon("Charmander",100,18),Pokemon("Pidgey",80,12)],[5,2]),
+    Trainer("Brock",[Pokemon("Geodude",80,15),Pokemon("Onix",100,18)],[4,1],"Boulder Badge"),
+    Trainer("Misty",[Pokemon("Staryu",90,14),Pokemon("Starmie",110,20)],[1,3],"Cascade Badge")
+]
+
+# ===============================
+# HELPER FUNCTIONS
+# ===============================
+def draw_text(text,x,y): screen.blit(font.render(text,True,BLACK),(x,y))
+def draw_hp_bar(x,y,hp,max_hp):
+    ratio=hp/max_hp
+    pygame.draw.rect(screen,RED,(x,y,100,10))
+    pygame.draw.rect(screen,GREEN,(x,y,100*ratio,10))
+def draw_map():
+    for y,row in enumerate(map_data):
+        for x,tile in enumerate(row):
+            pygame.draw.rect(screen,tile_colors[tile],(x*tile_size,y*tile_size,tile_size,tile_size))
+
+# ===============================
+# MAIN LOOP
+# ===============================
+clock = pygame.time.Clock()
+current_trainer = None
+wild_enemy = None
+
+while True:
+    screen.fill(WHITE)
+    keys = pygame.key.get_pressed()
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT: pygame.quit(); sys.exit()
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            x,y=event.pos
+
+            # Battle move buttons
+            if mode in ["battle","battle_trainer"] and player_turn:
+                for i,move in enumerate(player_team[0].moves):
+                    if 50+i*180<x<210+i*180 and 400<y<450:
+                        enemy = wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+                        dmg = player_team[0].attack_target(move,enemy)
+                        message=f"{move['name']} dealt {dmg}!"
+                        player_turn=False
+                # Catch button only for wild
+                if mode=="battle" and 250<x<400 and 400<y<450:
+                    if pokeballs>0:
+                        pokeballs-=1
+                        chance=0.3+(1-(wild_enemy.hp/wild_enemy.max_hp))
+                        if random.random()<chance:
+                            message=f"You caught {wild_enemy.name}!"
+                            player_team.append(wild_enemy)
+                            mode="overworld"
+                        else: message="Failed to catch!"; player_turn=False
+                # Run button
+                if 450<x<600 and 400<y<450: mode="overworld"
+
+    # ===============================
+    # OVERWORLD
+    # ===============================
+    if mode=="overworld":
+        draw_map()
+        # Move player
+        if keys[pygame.K_w]: new_y=player_tile[1]-1; new_x=player_tile[0]
+        elif keys[pygame.K_s]: new_y=player_tile[1]+1; new_x=player_tile[0]
+        elif keys[pygame.K_a]: new_x=player_tile[0]-1; new_y=player_tile[1]
+        elif keys[pygame.K_d]: new_x=player_tile[0]+1; new_y=player_tile[1]
+        else: new_x,new_y=player_tile
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data) and map_data[new_y][new_x]!="water":
+            player_tile=[new_x,new_y]
+
+        # Draw player
+        pygame.draw.rect(screen,BLUE,(player_tile[0]*tile_size,player_tile[1]*tile_size,tile_size,tile_size))
+
+        draw_text(f"Pokéballs: {pokeballs}",10,10)
+        draw_text(f"Badges: {', '.join(badges)}",10,40)
+        draw_text(message,10,70)
+
+        # Wild encounters
+        if map_data[player_tile[1]][player_tile[0]]=="grass":
+            if random.random()<0.02:
+                wild_enemy=get_random_wild()
+                mode="battle"
+                player_turn=True
+                message=f"A wild {wild_enemy.name} appeared!"
+
+        # Trainer encounters
+        for trainer in trainers:
+            trainer.move_random()
+            if trainer.active:
+                if abs(trainer.pos[0]-player_tile[0])<=1 and abs(trainer.pos[1]-player_tile[1])<=1:
+                    current_trainer=trainer
+                    mode="battle_trainer"
+                    player_turn=True
+                    message=f"{trainer.name} challenges you!"
+            pygame.draw.rect(screen,(255,0,0),(trainer.pos[0]*tile_size,trainer.pos[1]*tile_size,tile_size,tile_size))
+            draw_text(trainer.name,trainer.pos[0]*tile_size,trainer.pos[1]*tile_size-20)
+
+        # Pokémon Center
+        if map_data[player_tile[1]][player_tile[0]]=="center":
+            draw_text("Press H to heal Pokémon",10,100)
+            if keys[pygame.K_h]:
+                for p in player_team: p.hp=p.max_hp
+                message="All Pokémon healed!"
+
+    # ===============================
+    # BATTLE
+    # ===============================
+    if mode in ["battle","battle_trainer"]:
+        player = player_team[0]
+        enemy = wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+        pygame.draw.rect(screen,BLUE,(100,250,100,100))
+        pygame.draw.rect(screen,RED,(600,100,100,100))
+        draw_text(player.name,100,220)
+        draw_text(enemy.name,600,70)
+        draw_hp_bar(100,240,player.hp,player.max_hp)
+        draw_hp_bar(600,80,enemy.hp,enemy.max_hp)
+
+        # Draw buttons
+        for i,move in enumerate(player.moves):
+            pygame.draw.rect(screen,GREEN,(50+i*180,400,160,50))
+            draw_text(move["name"],60+i*180,415)
+        if mode=="battle":
+            pygame.draw.rect(screen,BLUE,(250,400,150,50))
+            draw_text("CATCH",270,415)
+        pygame.draw.rect(screen,RED,(450,400,150,50))
+        draw_text("RUN",490,415)
+        draw_text(message,300,370)
+
+        # Enemy turn
+        if not player_turn and enemy.is_alive():
+            pygame.time.delay(500)
+            dmg = enemy.attack_target(enemy.moves[0],player)
+            message=f"{enemy.name} dealt {dmg}!"
+            player_turn=True
+
+        # Check fainted
+        if not enemy.is_alive():
+            if mode=="battle":
+                player_team[0].gain_xp(25)
+                message=f"{enemy.name} fainted!"
+                mode="overworld"
+            else: # trainer battle
+                current_trainer.next_pokemon()
+                next_enemy=current_trainer.get_active_pokemon()
+                if next_enemy: message=f"{current_trainer.name} sends out {next_enemy.name}!"
+                else:
+                    message=f"You defeated {current_trainer.name}!"
+                    for p in player_team: p.gain_xp(50)
+                    if current_trainer.badge and current_trainer.badge not in badges:
+                        badges.append(current_trainer.badge)
+                        message+=f" You earned {current_trainer.badge}!"
+                    current_trainer.active=False
+                    mode="overworld"
+
+        # Player fainted
+        if not player.is_alive():
+            alive_team=[p for p in player_team if p.is_alive()]
+            if alive_team:
+                player_team[0]=alive_team[0]
+                message=f"{player_team[0].name} enters!"
+            else:
+                message="All Pokémon fainted! Game Over"
+                pygame.time.delay(1500)
+                pygame.quit()
+                sys.exit()
+
+    pygame.display.update()
+    clock.tick(60)
+
+sprites/pikachu.png
+sprites/raichu.png
+sprites/charmander.png
+sprites/bulbasaur.png
+sprites/squirtle.png
+
+pikachu_img = pygame.image.load("sprites/pikachu.png").convert_alpha()
+pikachu_img = pygame.transform.scale(pikachu_img, (100,100))
+charmander_img = pygame.image.load("sprites/charmander.png").convert_alpha()
+charmander_img = pygame.transform.scale(charmander_img, (100,100))
+# Repeat for all Pokémon
+
+class Pokemon:
+    def __init__(self, name, hp, attack, level=1, evolution=None, sprite=None):
+        ...
+        self.sprite = sprite
+
+# Player Pokémon
+screen.blit(player_team[0].sprite, (100,250))
+# Enemy Pokémon
+enemy_sprite = enemy.sprite if enemy.sprite else pygame.Surface((100,100))
+screen.blit(enemy_sprite, (600,100))
+
+def attack_animation(attacker_sprite, x, y):
+    for i in range(5):
+        screen.blit(attacker_sprite, (x+i*5, y))
+        pygame.display.update()
+        pygame.time.delay(30)
+    for i in range(5):
+        screen.blit(attacker_sprite, (x+25-i*5, y))
+        pygame.display.update()
+        pygame.time.delay(30)
+
+attack_animation(player_team[0].sprite, 100,250)
+dmg = player_team[0].attack_target(move, enemy)
+
+sprites/battle_bg.png
+
+battle_bg = pygame.image.load("sprites/battle_bg.png").convert()
+battle_bg = pygame.transform.scale(battle_bg, (WIDTH, HEIGHT))
+screen.blit(battle_bg, (0,0))
+
+ash_sprite = pygame.image.load("sprites/ash.png").convert_alpha()
+ash_sprite = pygame.transform.scale(ash_sprite, (50,50))
+# Draw
+screen.blit(ash_sprite, (trainer.pos[0]*tile_size, trainer.pos[1]*tile_size))
+
+def update_hp_bar(x, y, hp, max_hp, current_displayed_hp):
+    if current_displayed_hp > hp:
+        current_displayed_hp -= 1  # smooth decrease
+    ratio = current_displayed_hp / max_hp
+    pygame.draw.rect(screen, RED, (x, y, 100, 10))
+    pygame.draw.rect(screen, GREEN, (x, y, 100*ratio, 10))
+    return current_displayed_hp
+
+pygame.mixer.init()
+pygame.mixer.music.load("sounds/battle_theme.mp3")
+pygame.mixer.music.play(-1)  # loop
+
+attack_sound = pygame.mixer.Sound("sounds/attack.wav")
+attack_sound.play()
+
+pokemon_rpg/
+│
+├─ main.py              # The game code
+├─ sprites/
+│   ├─ pikachu.png
+│   ├─ raichu.png
+│   ├─ charmander.png
+│   ├─ bulbasaur.png
+│   ├─ squirtle.png
+│   ├─ ash.png
+│   ├─ brock.png
+│   ├─ misty.png
+│   └─ battle_bg.png
+└─ sounds/
+    ├─ battle_theme.mp3
+    └─ attack.wav
+
+import pygame, random, sys
+
+pygame.init()
+WIDTH, HEIGHT = 800, 500
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Mini Pokémon RPG")
+font = pygame.font.SysFont(None, 28)
+
+# Colors
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+GREEN = (34,139,34)
+RED = (200,0,0)
+BLUE = (0,0,255)
+GOLD = (255,215,0)
+PINK = (255,192,203)
+GRAY = (200,200,200)
+
+# ===============================
+# Load Sprites
+# ===============================
+def load_sprite(path, scale=(100,100)):
+    img = pygame.image.load(path).convert_alpha()
+    return pygame.transform.scale(img, scale)
+
+sprites = {
+    "pikachu": load_sprite("sprites/pikachu.png"),
+    "raichu": load_sprite("sprites/raichu.png"),
+    "charmander": load_sprite("sprites/charmander.png"),
+    "bulbasaur": load_sprite("sprites/bulbasaur.png"),
+    "squirtle": load_sprite("sprites/squirtle.png"),
+    "ash": load_sprite("sprites/ash.png",(50,50)),
+    "brock": load_sprite("sprites/brock.png",(50,50)),
+    "misty": load_sprite("sprites/misty.png",(50,50)),
+    "battle_bg": load_sprite("sprites/battle_bg.png",(WIDTH,HEIGHT))
+}
+
+# ===============================
+# Load Sounds
+# ===============================
+pygame.mixer.init()
+pygame.mixer.music.load("sounds/battle_theme.mp3")
+pygame.mixer.music.play(-1)
+attack_sound = pygame.mixer.Sound("sounds/attack.wav")
+
+# ===============================
+# Map Tiles
+# ===============================
+tile_size = 50
+map_data = [
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["town","town","town","path","gym","grass","grass","grass"],
+    ["path","path","path","path","path","grass","grass","grass"],
+    ["center","grass","grass","grass","grass","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"]
+]
+tile_colors = {"grass":GREEN,"path":GRAY,"town":(210,180,140),"gym":GOLD,"center":PINK}
+
+# ===============================
+# Pokemon Class
+# ===============================
+class Pokemon:
+    def __init__(self,name,hp,attack,level=1,evolution=None,sprite=None):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.attack = attack
+        self.level = level
+        self.xp = 0
+        self.evolution = evolution
+        self.sprite = sprite
+        self.moves = [{"name":"Quick Attack","power":10},{"name":"Strong Hit","power":18}]
+    def is_alive(self): return self.hp>0
+    def attack_target(self,move,target):
+        attack_sound.play()
+        dmg = int((self.attack+move["power"])*random.uniform(0.8,1.2))
+        target.hp -= dmg
+        return dmg
+    def gain_xp(self,amount):
+        self.xp += amount
+        if self.xp>=50:
+            self.level+=1
+            self.xp=0
+            self.max_hp+=10
+            self.attack+=3
+            self.hp=self.max_hp
+            print(f"{self.name} leveled up!")
+            if self.evolution and self.level>=3: self.evolve()
+    def evolve(self):
+        new_name,new_hp,new_attack = self.evolution
+        print(f"{self.name} evolved into {new_name}!")
+        self.name=new_name
+        self.max_hp=new_hp
+        self.attack=new_attack
+        self.hp=new_hp
+        self.sprite = sprites[new_name.lower()]
+
+# ===============================
+# Trainer Class
+# ===============================
+class Trainer:
+    def __init__(self,name,team,pos,badge=None,sprite=None):
+        self.name=name
+        self.team=team
+        self.pos=pos
+        self.active=True
+        self.current_index=0
+        self.badge=badge
+        self.sprite=sprite
+    def move_random(self):
+        if not self.active: return
+        dx,dy=random.choice([[0,1],[0,-1],[1,0],[-1,0],[0,0]])
+        new_x=self.pos[0]+dx
+        new_y=self.pos[1]+dy
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data):
+            if map_data[new_y][new_x]!="water": self.pos=[new_x,new_y]
+    def get_active_pokemon(self):
+        if self.current_index<len(self.team): return self.team[self.current_index]
+        return None
+    def next_pokemon(self): self.current_index+=1
+
+# ===============================
+# Game State
+# ===============================
+player_tile = [3,3]
+player_team = [Pokemon("Pikachu",100,20,evolution=("Raichu",130,28),sprite=sprites["pikachu"])]
+pokeballs = 5
+badges = []
+mode = "overworld" # overworld / battle / battle_trainer
+player_turn = True
+message = ""
+current_trainer = None
+wild_enemy = None
+clock = pygame.time.Clock()
+
+# ===============================
+# Trainers
+# ===============================
+trainers = [
+    Trainer("Ash",[Pokemon("Charmander",100,18,sprite=sprites["charmander"]),
+                   Pokemon("Pidgey",80,12)], [5,2], sprite=sprites["ash"]),
+    Trainer("Brock",[Pokemon("Geodude",80,15),Pokemon("Onix",100,18)],[4,1],"Boulder Badge",sprite=sprites["brock"]),
+    Trainer("Misty",[Pokemon("Staryu",90,14),Pokemon("Starmie",110,20)],[1,3],"Cascade Badge",sprite=sprites["misty"])
+]
+
+# ===============================
+# Helper Functions
+# ===============================
+def draw_text(text,x,y): screen.blit(font.render(text,True,BLACK),(x,y))
+def draw_hp_bar(x,y,hp,max_hp):
+    ratio=hp/max_hp
+    pygame.draw.rect(screen,RED,(x,y,100,10))
+    pygame.draw.rect(screen,GREEN,(x,y,100*ratio,10))
+def draw_map():
+    for y,row in enumerate(map_data):
+        for x,tile in enumerate(row):
+            pygame.draw.rect(screen,tile_colors[tile],(x*tile_size,y*tile_size,tile_size,tile_size))
+def attack_animation(sprite,x,y):
+    for i in range(5):
+        screen.blit(sprite,(x+i*5,y));pygame.display.update();pygame.time.delay(30)
+    for i in range(5):
+        screen.blit(sprite,(x+25-i*5,y));pygame.display.update();pygame.time.delay(30)
+def get_random_wild():
+    return random.choice([
+        Pokemon("Charmander",100,18,evolution=("Charmeleon",130,25),sprite=sprites["charmander"]),
+        Pokemon("Bulbasaur",100,16,evolution=("Ivysaur",130,24),sprite=sprites["bulbasaur"]),
+        Pokemon("Squirtle",100,17,evolution=("Wartortle",130,23),sprite=sprites["squirtle"])
+    ])
+
+# ===============================
+# Main Loop
+# ===============================
+while True:
+    screen.fill(WHITE)
+    keys = pygame.key.get_pressed()
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT: pygame.quit(); sys.exit()
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            x,y=event.pos
+            if mode in ["battle","battle_trainer"] and player_turn:
+                for i,move in enumerate(player_team[0].moves):
+                    if 50+i*180<x<210+i*180 and 400<y<450:
+                        enemy = wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+                        attack_animation(player_team[0].sprite,100,250)
+                        dmg=player_team[0].attack_target(move,enemy)
+                        message=f"{move['name']} dealt {dmg}!"
+                        player_turn=False
+                if mode=="battle" and 250<x<400 and 400<y<450:
+                    if pokeballs>0:
+                        pokeballs-=1
+                        chance=0.3+(1-(wild_enemy.hp/wild_enemy.max_hp))
+                        if random.random()<chance:
+                            message=f"You caught {wild_enemy.name}!"
+                            player_team.append(wild_enemy)
+                            mode="overworld"
+                        else: message="Failed to catch!"; player_turn=False
+                if 450<x<600 and 400<y<450: mode="overworld"
+
+    # ===============================
+    # Overworld
+    # ===============================
+    if mode=="overworld":
+        draw_map()
+        if keys[pygame.K_w]: new_y=player_tile[1]-1; new_x=player_tile[0]
+        elif keys[pygame.K_s]: new_y=player_tile[1]+1; new_x=player_tile[0]
+        elif keys[pygame.K_a]: new_x=player_tile[0]-1; new_y=player_tile[1]
+        elif keys[pygame.K_d]: new_x=player_tile[0]+1; new_y=player_tile[1]
+        else: new_x,new_y=player_tile
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data) and map_data[new_y][new_x]!="water":
+            player_tile=[new_x,new_y]
+
+        pygame.draw.rect(screen,BLUE,(player_tile[0]*tile_size,player_tile[1]*tile_size,tile_size,tile_size))
+        draw_text(f"Pokéballs: {pokeballs}",10,10)
+        draw_text(f"Badges: {', '.join(badges)}",10,40)
+        draw_text(message,10,70)
+
+        if map_data[player_tile[1]][player_tile[0]]=="grass" and random.random()<0.02:
+            wild_enemy=get_random_wild()
+            mode="battle"; player_turn=True; message=f"A wild {wild_enemy.name} appeared!"
+
+        for trainer in trainers:
+            trainer.move_random()
+            if trainer.active:
+                if abs(trainer.pos[0]-player_tile[0])<=1 and abs(trainer.pos[1]-player_tile[1])<=1:
+                    current_trainer=trainer; mode="battle_trainer"; player_turn=True; message=f"{trainer.name} challenges you!"
+            if trainer.sprite:
+                screen.blit(trainer.sprite,(trainer.pos[0]*tile_size,trainer.pos[1]*tile_size))
+
+        if map_data[player_tile[1]][player_tile[0]]=="center":
+            draw_text("Press H to heal Pokémon",10,100)
+            if keys[pygame.K_h]:
+                for p in player_team: p.hp=p.max_hp
+                message="All Pokémon healed!"
+
+    # ===============================
+    # Battle
+    # ===============================
+    if mode in ["battle","battle_trainer"]:
+        player=player_team[0]
+        enemy=wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+        screen.blit(sprites["battle_bg"],(0,0))
+        screen.blit(player.sprite,(100,250))
+        screen.blit(enemy.sprite,(600,100))
+        draw_text(player.name,100,220)
+        draw_text(enemy.name,600,70)
+        draw_hp_bar(100,240,player.hp,player.max_hp)
+        draw_hp_bar(600,80,enemy.hp,enemy.max_hp)
+        for i,move in enumerate(player.moves):
+            pygame.draw.rect(screen,GREEN,(50+i*180,400,160,50))
+            draw_text(move["name"],60+i*180,415)
+        if mode=="battle": pygame.draw.rect(screen,BLUE,(250,400,150,50)); draw_text("CATCH",270,415)
+        pygame.draw.rect(screen,RED,(450,400,150,50)); draw_text("RUN",490,415)
+        draw_text(message,300,370)
+
+        if not player_turn and enemy.is_alive():
+            pygame.time.delay(500)
+            attack_animation(enemy.sprite,600,100)
+            dmg=enemy.attack_target(enemy.moves[0],player)
+            message=f"{enemy.name} dealt {dmg}!"
+            player_turn=True
+
+        if not enemy.is_alive():
+            if mode=="battle":
+                player_team[0].gain_xp(25)
+                mode="overworld"
+                message=f"{enemy.name} fainted!"
+            else:
+                current_trainer.next_pokemon()
+                next_enemy=current_trainer.get_active_pokemon()
+                if next_enemy: message=f"{current_trainer.name} sends out {next_enemy.name}!"
+                else:
+                    message=f"You defeated {current_trainer.name}!"
+                    for p in player_team: p.gain_xp(50)
+                    if current_trainer.badge and current_trainer.badge not in badges:
+                        badges.append(current_trainer.badge)
+                        message+=f" You earned {current_trainer.badge}!"
+                    current_trainer.active=False
+                    mode="overworld"
+
+        alive_team=[p for p in player_team if p.is_alive()]
+        if not player.is_alive():
+            if alive_team: player_team[0]=alive_team[0]; message=f"{player_team[0].name} enters!"
+            else: message="All Pokémon fainted! Game Over"; pygame.time.delay(1500); pygame.quit(); sys.exit()
+
+    pygame.display.update()
+    clock.tick(60)
+
+def move_animation(move_name, attacker_pos, target_pos):
+    # attacker_pos and target_pos are (x,y)
+    x0, y0 = attacker_pos
+    x1, y1 = target_pos
+
+    color = (255,255,0) if move_name=="Quick Attack" else (255,0,0)
+    for i in range(20):
+        x = int(x0 + (x1-x0)*i/20)
+        y = int(y0 + (y1-y0)*i/20)
+        pygame.draw.circle(screen, color, (x, y), 10)
+        pygame.display.update()
+        pygame.time.delay(15)
+
+def move_animation(move_name, attacker_pos, target_pos):
+    # attacker_pos and target_pos are (x,y)
+    x0, y0 = attacker_pos
+    x1, y1 = target_pos
+
+    color = (255,255,0) if move_name=="Quick Attack" else (255,0,0)
+    for i in range(20):
+        x = int(x0 + (x1-x0)*i/20)
+        y = int(y0 + (y1-y0)*i/20)
+        pygame.draw.circle(screen, color, (x, y), 10)
+        pygame.display.update()
+        pygame.time.delay(15)
+
+def dialogue_box(text):
+    pygame.draw.rect(screen, BLACK, (50, 380, 700, 80))
+    pygame.draw.rect(screen, WHITE, (55, 385, 690, 70))
+    draw_text(text, 70, 400)
+
+if mode=="overworld":
+    for trainer in trainers:
+        if trainer.active and abs(trainer.pos[0]-player_tile[0])<=1:
+            dialogue_box(f"{trainer.name}: I will battle you!")
+
+def perform_move(attacker, target, move):
+    dialogue_box(f"{attacker.name} used {move['name']}!")
+    pygame.display.update()
+    pygame.time.delay(500)
+    move_animation(move["name"], (100,300), (650,150))
+    dmg = attacker.attack_target(move, target)
+    dialogue_box(f"{move['name']} dealt {dmg} damage!")
+    pygame.display.update()
+    pygame.time.delay(500)
+
+town_dialogues = {
+    (0,0): ["Welcome to Pallet Town!", "Press H at Pokémon Center to heal."],
+    (1,1): ["I am training my Pokémon!"]
+}
+
+def show_dialogue(x,y):
+    if (x,y) in town_dialogues:
+        for line in town_dialogues[(x,y)]:
+            dialogue_box(line)
+            pygame.display.update()
+            pygame.time.delay(1200)
+
+import pygame, random, sys
+
+pygame.init()
+WIDTH, HEIGHT = 800, 500
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Mini Pokémon RPG")
+font = pygame.font.SysFont(None, 28)
+
+# Colors
+WHITE=(255,255,255); BLACK=(0,0,0); GREEN=(34,139,34); RED=(200,0,0)
+BLUE=(0,0,255); GOLD=(255,215,0); PINK=(255,192,203); GRAY=(200,200,200)
+YELLOW=(255,255,0); ORANGE=(255,165,0)
+
+# ===============================
+# Load Sprites
+# ===============================
+def load_sprite(path, scale=(100,100)):
+    img=pygame.image.load(path).convert_alpha()
+    return pygame.transform.scale(img,scale)
+
+sprites={
+    "pikachu":load_sprite("sprites/pikachu.png"),
+    "raichu":load_sprite("sprites/raichu.png"),
+    "charmander":load_sprite("sprites/charmander.png"),
+    "bulbasaur":load_sprite("sprites/bulbasaur.png"),
+    "squirtle":load_sprite("sprites/squirtle.png"),
+    "ash":load_sprite("sprites/ash.png",(50,50)),
+    "brock":load_sprite("sprites/brock.png",(50,50)),
+    "misty":load_sprite("sprites/misty.png",(50,50)),
+    "battle_bg":load_sprite("sprites/battle_bg.png",(WIDTH,HEIGHT))
+}
+
+# ===============================
+# Load Sounds
+# ===============================
+pygame.mixer.init()
+pygame.mixer.music.load("sounds/battle_theme.mp3")
+pygame.mixer.music.play(-1)
+attack_sound=pygame.mixer.Sound("sounds/attack.wav")
+
+# ===============================
+# Map
+# ===============================
+tile_size=50
+map_data=[
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["town","town","town","path","gym","grass","grass","grass"],
+    ["path","path","path","path","path","grass","grass","grass"],
+    ["center","grass","grass","grass","grass","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"]
+]
+tile_colors={"grass":GREEN,"path":GRAY,"town":(210,180,140),"gym":GOLD,"center":PINK}
+
+# ===============================
+# Pokemon Class
+# ===============================
+class Pokemon:
+    def __init__(self,name,hp,attack,level=1,evolution=None,sprite=None):
+        self.name=name; self.max_hp=hp; self.hp=hp; self.attack=attack
+        self.level=level; self.xp=0; self.evolution=evolution; self.sprite=sprite
+        self.moves=[{"name":"Quick Attack","power":10},{"name":"Strong Hit","power":18}]
+    def is_alive(self): return self.hp>0
+    def attack_target(self,move,target):
+        attack_sound.play()
+        dmg=int((self.attack+move["power"])*random.uniform(0.8,1.2))
+        target.hp-=dmg
+        return dmg
+    def gain_xp(self,amount):
+        self.xp+=amount
+        if self.xp>=50:
+            self.level+=1; self.xp=0; self.max_hp+=10; self.attack+=3; self.hp=self.max_hp
+            print(f"{self.name} leveled up!")
+            if self.evolution and self.level>=3: self.evolve()
+    def evolve(self):
+        new_name,new_hp,new_attack=self.evolution
+        print(f"{self.name} evolved into {new_name}!")
+        self.name=new_name; self.max_hp=new_hp; self.attack=new_attack; self.hp=new_hp
+        self.sprite=sprites[new_name.lower()]
+
+# ===============================
+# Trainer Class
+# ===============================
+class Trainer:
+    def __init__(self,name,team,pos,badge=None,sprite=None):
+        self.name=name; self.team=team; self.pos=pos
+        self.active=True; self.current_index=0; self.badge=badge; self.sprite=sprite
+    def move_random(self):
+        if not self.active: return
+        dx,dy=random.choice([[0,1],[0,-1],[1,0],[-1,0],[0,0]])
+        new_x=self.pos[0]+dx; new_y=self.pos[1]+dy
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data):
+            if map_data[new_y][new_x]!="water": self.pos=[new_x,new_y]
+    def get_active_pokemon(self):
+        if self.current_index<len(self.team): return self.team[self.current_index]
+        return None
+    def next_pokemon(self): self.current_index+=1
+
+# ===============================
+# Game State
+# ===============================
+player_tile=[3,3]
+player_team=[Pokemon("Pikachu",100,20,evolution=("Raichu",130,28),sprite=sprites["pikachu"])]
+pokeballs=5; badges=[]
+mode="overworld" # overworld / battle / battle_trainer
+player_turn=True; message=""
+current_trainer=None; wild_enemy=None
+clock=pygame.time.Clock()
+
+# ===============================
+# Trainers
+# ===============================
+trainers=[
+    Trainer("Ash",[Pokemon("Charmander",100,18,sprite=sprites["charmander"]),
+                   Pokemon("Pidgey",80,12)], [5,2], sprite=sprites["ash"]),
+    Trainer("Brock",[Pokemon("Geodude",80,15),Pokemon("Onix",100,18)],[4,1],"Boulder Badge",sprite=sprites["brock"]),
+    Trainer("Misty",[Pokemon("Staryu",90,14),Pokemon("Starmie",110,20)],[1,3],"Cascade Badge",sprite=sprites["misty"])
+]
+
+# ===============================
+# Helper Functions
+# ===============================
+def draw_text(text,x,y): screen.blit(font.render(text,True,BLACK),(x,y))
+def draw_hp_bar(x,y,hp,max_hp):
+    ratio=hp/max_hp
+    pygame.draw.rect(screen,RED,(x,y,100,10))
+    pygame.draw.rect(screen,GREEN,(x,y,100*ratio,10))
+def draw_map():
+    for y,row in enumerate(map_data):
+        for x,tile in enumerate(row):
+            pygame.draw.rect(screen,tile_colors[tile],(x*tile_size,y*tile_size,tile_size,tile_size))
+def attack_animation(move_name,attacker_pos,target_pos):
+    x0,y0=attacker_pos; x1,y1=target_pos
+    color=YELLOW if move_name=="Quick Attack" else RED
+    for i in range(20):
+        x=int(x0+(x1-x0)*i/20); y=int(y0+(y1-y0)*i/20)
+        pygame.draw.circle(screen,color,(x,y),10)
+        pygame.display.update(); pygame.time.delay(15)
+def dialogue_box(text):
+    pygame.draw.rect(screen,BLACK,(50,380,700,80))
+    pygame.draw.rect(screen,WHITE,(55,385,690,70))
+    draw_text(text,70,400)
+def perform_move(attacker,target,move):
+    dialogue_box(f"{attacker.name} used {move['name']}!")
+    pygame.display.update(); pygame.time.delay(500)
+    attack_animation(move["name"],(100,300),(650,150))
+    dmg=attacker.attack_target(move,target)
+    dialogue_box(f"{move['name']} dealt {dmg} damage!")
+    pygame.display.update(); pygame.time.delay(500)
+
+def get_random_wild():
+    return random.choice([
+        Pokemon("Charmander",100,18,evolution=("Charmeleon",130,25),sprite=sprites["charmander"]),
+        Pokemon("Bulbasaur",100,16,evolution=("Ivysaur",130,24),sprite=sprites["bulbasaur"]),
+        Pokemon("Squirtle",100,17,evolution=("Wartortle",130,23),sprite=sprites["squirtle"])
+    ])
+
+# ===============================
+# NPC Dialogue Tiles
+# ===============================
+town_dialogues={
+    (0,0):["Welcome to Pallet Town!","Press H at Pokémon Center to heal."],
+    (1,1):["I am training my Pokémon!"]
+}
+def show_dialogue(x,y):
+    if (x,y) in town_dialogues:
+        for line in town_dialogues[(x,y)]:
+            dialogue_box(line)
+            pygame.display.update()
+            pygame.time.delay(1200)
+
+# ===============================
+# Main Loop
+# ===============================
+while True:
+    screen.fill(WHITE)
+    keys=pygame.key.get_pressed()
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT: pygame.quit(); sys.exit()
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            x,y=event.pos
+            if mode in ["battle","battle_trainer"] and player_turn:
+                for i,move in enumerate(player_team[0].moves):
+                    if 50+i*180<x<210+i*180 and 400<y<450:
+                        enemy = wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+                        perform_move(player_team[0],enemy,move)
+                        player_turn=False
+                if mode=="battle" and 250<x<400 and 400<y<450:
+                    if pokeballs>0:
+                        pokeballs-=1
+                        chance=0.3+(1-(wild_enemy.hp/wild_enemy.max_hp))
+                        if random.random()<chance:
+                            message=f"You caught {wild_enemy.name}!"
+                            player_team.append(wild_enemy)
+                            mode="overworld"
+                        else: message="Failed to catch!"; player_turn=False
+                if 450<x<600 and 400<y<450: mode="overworld"
+
+    # ===============================
+    # Overworld
+    # ===============================
+    if mode=="overworld":
+        draw_map()
+        if keys[pygame.K_w]: new_y=player_tile[1]-1; new_x=player_tile[0]
+        elif keys[pygame.K_s]: new_y=player_tile[1]+1; new_x=player_tile[0]
+        elif keys[pygame.K_a]: new_x=player_tile[0]-1; new_y=player_tile[1]
+        elif keys[pygame.K_d]: new_x=player_tile[0]+1; new_y=player_tile[1]
+        else: new_x,new_y=player_tile
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data) and map_data[new_y][new_x]!="water":
+            player_tile=[new_x,new_y]
+        pygame.draw.rect(screen,BLUE,(player_tile[0]*tile_size,player_tile[1]*tile_size,tile_size,tile_size))
+        draw_text(f"Pokéballs: {pokeballs}",10,10)
+        draw_text(f"Badges: {', '.join(badges)}",10,40)
+        draw_text(message,10,70)
+        show_dialogue(player_tile[0],player_tile[1])
+
+        if map_data[player_tile[1]][player_tile[0]]=="grass" and random.random()<0.02:
+            wild_enemy=get_random_wild()
+            mode="battle"; player_turn=True; message=f"A wild {wild_enemy.name} appeared!"
+
+        for trainer in trainers:
+            trainer.move_random()
+            if trainer.active and abs(trainer.pos[0]-player_tile[0])<=1 and abs(trainer.pos[1]-player_tile[1])<=1:
+                current_trainer=trainer; mode="battle_trainer"; player_turn=True; message=f"{trainer.name} challenges you!"
+            if trainer.sprite:
+                screen.blit(trainer.sprite,(trainer.pos[0]*tile_size,trainer.pos[1]*tile_size))
+
+        if map_data[player_tile[1]][player_tile[0]]=="center":
+            draw_text("Press H to heal Pokémon",10,100)
+            if keys[pygame.K_h]:
+                for p in player_team: p.hp=p.max_hp
+                message="All Pokémon healed!"
+
+    # ===============================
+    # Battle
+    # ===============================
+    if mode in ["battle","battle_trainer"]:
+        player=player_team[0]
+        enemy=wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+        screen.blit(sprites["battle_bg"],(0,0))
+        screen.blit(player.sprite,(100,250))
+        screen.blit(enemy.sprite,(600,100))
+        draw_text(player.name,100,220); draw_text(enemy.name,600,70)
+        draw_hp_bar(100,240,player.hp,player.max_hp)
+        draw_hp_bar(600,80,enemy.hp,enemy.max_hp)
+        for i,move in enumerate(player.moves):
+            pygame.draw.rect(screen,GREEN,(50+i*180,400,160,50))
+            draw_text(move["name"],60+i*180,415)
+        if mode=="battle": pygame.draw.rect(screen,BLUE,(250,400,150,50)); draw_text("CATCH",270,415)
+        pygame.draw.rect(screen,RED,(450,400,150,50)); draw_text("RUN",490,415)
+        dialogue_box(message)
+
+        if not player_turn and enemy.is_alive():
+            pygame.time.delay(500)
+            perform_move(enemy,player,enemy.moves[0])
+            player_turn=True
+
+        if not enemy.is_alive():
+            if mode=="battle":
+                player_team[0].gain_xp(25); mode="overworld"; message=f"{enemy.name} fainted!"
+            else:
+                current_trainer.next_pokemon()
+                next_enemy=current_trainer.get_active_pokemon()
+                if next_enemy: message=f"{current_trainer.name} sends out {next_enemy.name}!"
+                else:
+                    message=f"You defeated {current_trainer.name}!"
+                    for p in player_team: p.gain_xp(50)
+                    if current_trainer.badge and current_trainer.badge not in badges:
+                        badges.append(current_trainer.badge)
+                        message+=f" You earned {current_trainer.badge}!"
+                    current_trainer.active=False
+                    mode="overworld"
+
+        alive_team=[p for p in player_team if p.is_alive()]
+        if not player.is_alive():
+            if alive_team: player_team[0]=alive_team[0]; message=f"{player_team[0].name} enters!"
+            else: message="All Pokémon fainted! Game Over"; pygame.time.delay(1500); pygame.quit(); sys.exit()
+
+    pygame.display.update()
+    clock.tick(60)
+
+def move_particles(move_name, attacker_pos, target_pos):
+    x0, y0 = attacker_pos
+    x1, y1 = target_pos
+    if move_name=="Quick Attack":
+        color = (255,255,0); size=8; steps=20
+        for i in range(steps):
+            x = int(x0 + (x1-x0)*i/steps)
+            y = int(y0 + (y1-y0)*i/steps)
+            pygame.draw.circle(screen,color,(x,y),size)
+            pygame.display.update(); pygame.time.delay(10)
+    elif move_name=="Strong Hit":
+        color=(255,0,0); size=15; steps=15
+        for i in range(steps):
+            x=int(x0+(x1-x0)*i/steps)
+            y=int(y0+(y1-y0)*i/steps)
+            pygame.draw.circle(screen,color,(x,y),size)
+            pygame.display.update(); pygame.time.delay(20)
+    elif move_name=="Thunder Shock":
+        color=(0,0,255); points=[(x0,y0),(x0+10,y0+15),(x1-10,y1-15),(x1,y1)]
+        pygame.draw.lines(screen,color,False,points,4); pygame.display.update(); pygame.time.delay(300)
+    elif move_name=="Ember":
+        color=(255,140,0); for i in range(10):
+            x=int(x0 + (x1-x0)*i/10)+random.randint(-5,5)
+            y=int(y0 + (y1-y0)*i/10)+random.randint(-5,5)
+            pygame.draw.circle(screen,color,(x,y),5)
+            pygame.display.update(); pygame.time.delay(50)
+    elif move_name=="Water Gun":
+        color=(0,191,255); for i in range(15):
+            x=int(x0+(x1-x0)*i/15); y=int(y0+(y1-y0)*i/15)
+            pygame.draw.ellipse(screen,color,(x,y,12,6))
+            pygame.display.update(); pygame.time.delay(30)
+
+def evolve_animation(pokemon):
+    x, y = 100, 250  # Player Pokémon position
+    for i in range(5):
+        size = 100 + i*20
+        sprite = pygame.transform.scale(pokemon.sprite,(size,size))
+        screen.blit(sprites["battle_bg"],(0,0))
+        screen.blit(sprite,(x- i*10, y - i*10))
+        pygame.display.update(); pygame.time.delay(200)
+
+gym_switches = {(4,4): False} # False=off, True=on
+def draw_gym_switches():
+    for pos, state in gym_switches.items():
+        color = GOLD if state else GRAY
+        pygame.draw.rect(screen,color,(pos[0]*tile_size,pos[1]*tile_size,tile_size,tile_size))
+
+# Player toggles switch by pressing 'E'
+if keys[pygame.K_e] and (player_tile[0],player_tile[1]) in gym_switches:
+    gym_switches[(player_tile[0],player_tile[1])] = not gym_switches[(player_tile[0],player_tile[1])]
+    message = "Switch toggled!"
+
+def perform_move(attacker,target,move):
+    dialogue_box(f"{attacker.name} used {move['name']}!")
+    pygame.display.update(); pygame.time.delay(400)
+    move_particles(move["name"], (100,300), (650,150))
+    dmg = attacker.attack_target(move,target)
+    dialogue_box(f"{move['name']} dealt {dmg} damage!")
+    pygame.display.update(); pygame.time.delay(400)
+
+import pygame, random, sys
+
+pygame.init()
+WIDTH, HEIGHT = 800, 500
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Mini Pokémon X/Y RPG")
+font = pygame.font.SysFont(None, 28)
+
+# Colors
+WHITE, BLACK, GREEN, RED, BLUE = (255,255,255),(0,0,0),(34,139,34),(200,0,0),(0,0,255)
+GOLD, PINK, GRAY, YELLOW, ORANGE = (255,215,0),(255,192,203),(200,200,200),(255,255,0),(255,165,0)
+
+# ===============================
+# Load Sprites
+# ===============================
+def load_sprite(path, scale=(100,100)):
+    img = pygame.image.load(path).convert_alpha()
+    return pygame.transform.scale(img,scale)
+
+sprites = {
+    "pikachu": load_sprite("sprites/pikachu.png"),
+    "raichu": load_sprite("sprites/raichu.png"),
+    "charmander": load_sprite("sprites/charmander.png"),
+    "bulbasaur": load_sprite("sprites/bulbasaur.png"),
+    "squirtle": load_sprite("sprites/squirtle.png"),
+    "ash": load_sprite("sprites/ash.png",(50,50)),
+    "brock": load_sprite("sprites/brock.png",(50,50)),
+    "misty": load_sprite("sprites/misty.png",(50,50)),
+    "battle_bg": load_sprite("sprites/battle_bg.png",(WIDTH,HEIGHT))
+}
+
+# ===============================
+# Load Sounds
+# ===============================
+pygame.mixer.init()
+pygame.mixer.music.load("sounds/battle_theme.mp3")
+pygame.mixer.music.play(-1)
+attack_sound = pygame.mixer.Sound("sounds/attack.wav")
+
+# ===============================
+# Map
+# ===============================
+tile_size = 50
+map_data = [
+    ["town","town","town","path","path","grass","grass","grass"],
+    ["town","town","town","path","gym","grass","grass","grass"],
+    ["path","path","path","path","path","grass","grass","grass"],
+    ["center","grass","grass","grass","grass","grass","grass","grass"],
+    ["grass","grass","grass","grass","grass","grass","grass","grass"]
+]
+tile_colors = {"grass":GREEN,"path":GRAY,"town":(210,180,140),"gym":GOLD,"center":PINK}
+
+# ===============================
+# Pokemon Class
+# ===============================
+class Pokemon:
+    def __init__(self,name,hp,attack,level=1,evolution=None,sprite=None):
+        self.name=name; self.max_hp=hp; self.hp=hp; self.attack=attack
+        self.level=level; self.xp=0; self.evolution=evolution; self.sprite=sprite
+        self.moves=[{"name":"Quick Attack","power":10},{"name":"Strong Hit","power":18}]
+    def is_alive(self): return self.hp>0
+    def attack_target(self,move,target):
+        attack_sound.play()
+        dmg=int((self.attack+move["power"])*random.uniform(0.8,1.2))
+        target.hp -= dmg
+        return dmg
+    def gain_xp(self,amount):
+        self.xp += amount
+        if self.xp>=50:
+            self.level+=1; self.xp=0; self.max_hp+=10; self.attack+=3; self.hp=self.max_hp
+            print(f"{self.name} leveled up!")
+            if self.evolution and self.level>=3: self.evolve()
+    def evolve(self):
+        evolve_animation(self)
+        new_name,new_hp,new_attack=self.evolution
+        print(f"{self.name} evolved into {new_name}!")
+        self.name=new_name; self.max_hp=new_hp; self.attack=new_attack; self.hp=new_hp
+        self.sprite=sprites[new_name.lower()]
+
+# ===============================
+# Trainer Class
+# ===============================
+class Trainer:
+    def __init__(self,name,team,pos,badge=None,sprite=None):
+        self.name=name; self.team=team; self.pos=pos
+        self.active=True; self.current_index=0; self.badge=badge; self.sprite=sprite
+    def move_random(self):
+        if not self.active: return
+        dx,dy=random.choice([[0,1],[0,-1],[1,0],[-1,0],[0,0]])
+        new_x=self.pos[0]+dx; new_y=self.pos[1]+dy
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data):
+            if map_data[new_y][new_x]!="water": self.pos=[new_x,new_y]
+    def get_active_pokemon(self):
+        if self.current_index<len(self.team): return self.team[self.current_index]
+        return None
+    def next_pokemon(self): self.current_index+=1
+
+# ===============================
+# Game State
+# ===============================
+player_tile=[3,3]
+player_team=[Pokemon("Pikachu",100,20,evolution=("Raichu",130,28),sprite=sprites["pikachu"])]
+pokeballs=5; badges=[]
+mode="overworld"; player_turn=True; message=""
+current_trainer=None; wild_enemy=None; clock=pygame.time.Clock()
+
+# ===============================
+# Trainers
+# ===============================
+trainers=[
+    Trainer("Ash",[Pokemon("Charmander",100,18,sprite=sprites["charmander"]),
+                   Pokemon("Pidgey",80,12)], [5,2], sprite=sprites["ash"]),
+    Trainer("Brock",[Pokemon("Geodude",80,15),Pokemon("Onix",100,18)],[4,1],"Boulder Badge",sprite=sprites["brock"]),
+    Trainer("Misty",[Pokemon("Staryu",90,14),Pokemon("Starmie",110,20)],[1,3],"Cascade Badge",sprite=sprites["misty"])
+]
+
+# ===============================
+# Gym Switches
+# ===============================
+gym_switches = {(4,4): False}
+def draw_gym_switches():
+    for pos,state in gym_switches.items():
+        color=GOLD if state else GRAY
+        pygame.draw.rect(screen,color,(pos[0]*tile_size,pos[1]*tile_size,tile_size,tile_size))
+
+# ===============================
+# Helper Functions
+# ===============================
+def draw_text(text,x,y): screen.blit(font.render(text,True,BLACK),(x,y))
+def draw_hp_bar(x,y,hp,max_hp):
+    ratio=hp/max_hp
+    pygame.draw.rect(screen,RED,(x,y,100,10))
+    pygame.draw.rect(screen,GREEN,(x,y,100*ratio,10))
+def draw_map():
+    for y,row in enumerate(map_data):
+        for x,tile in enumerate(row):
+            pygame.draw.rect(screen,tile_colors[tile],(x*tile_size,y*tile_size,tile_size,tile_size))
+
+def dialogue_box(text):
+    pygame.draw.rect(screen,BLACK,(50,380,700,80))
+    pygame.draw.rect(screen,WHITE,(55,385,690,70))
+    draw_text(text,70,400)
+
+# ===============================
+# Particle Effects
+# ===============================
+def move_particles(move_name, attacker_pos, target_pos):
+    x0,y0=attacker_pos; x1,y1=target_pos
+    if move_name=="Quick Attack":
+        color=YELLOW; size=8; steps=20
+        for i in range(steps):
+            x=int(x0+(x1-x0)*i/steps); y=int(y0+(y1-y0)*i/steps)
+            pygame.draw.circle(screen,color,(x,y),size); pygame.display.update(); pygame.time.delay(10)
+    elif move_name=="Strong Hit":
+        color=RED; size=15; steps=15
+        for i in range(steps):
+            x=int(x0+(x1-x0)*i/steps); y=int(y0+(y1-y0)*i/steps)
+            pygame.draw.circle(screen,color,(x,y),size); pygame.display.update(); pygame.time.delay(20)
+    elif move_name=="Thunder Shock":
+        color=BLUE; points=[(x0,y0),(x0+10,y0+15),(x1-10,y1-15),(x1,y1)]
+        pygame.draw.lines(screen,color,False,points,4); pygame.display.update(); pygame.time.delay(300)
+    elif move_name=="Ember":
+        color=ORANGE
+        for i in range(10):
+            x=int(x0+(x1-x0)*i/10)+random.randint(-5,5)
+            y=int(y0+(y1-y0)*i/10)+random.randint(-5,5)
+            pygame.draw.circle(screen,color,(x,y),5); pygame.display.update(); pygame.time.delay(50)
+    elif move_name=="Water Gun":
+        color=(0,191,255)
+        for i in range(15):
+            x=int(x0+(x1-x0)*i/15); y=int(y0+(y1-y0)*i/15)
+            pygame.draw.ellipse(screen,color,(x,y,12,6)); pygame.display.update(); pygame.time.delay(30)
+
+# ===============================
+# Evolution Animation
+# ===============================
+def evolve_animation(pokemon):
+    x,y = 100,250
+    for i in range(5):
+        size=100+i*20
+        sprite=pygame.transform.scale(pokemon.sprite,(size,size))
+        screen.blit(sprites["battle_bg"],(0,0))
+        screen.blit(sprite,(x-i*10,y-i*10))
+        pygame.display.update(); pygame.time.delay(200)
+
+# ===============================
+# Battle Move Execution
+# ===============================
+def perform_move(attacker,target,move):
+    dialogue_box(f"{attacker.name} used {move['name']}!"); pygame.display.update(); pygame.time.delay(400)
+    move_particles(move["name"],(100,300),(650,150))
+    dmg=attacker.attack_target(move,target)
+    dialogue_box(f"{move['name']} dealt {dmg} damage!"); pygame.display.update(); pygame.time.delay(400)
+
+# ===============================
+# Random Wild Pokémon
+# ===============================
+def get_random_wild():
+    return random.choice([
+        Pokemon("Charmander",100,18,evolution=("Charmeleon",130,25),sprite=sprites["charmander"]),
+        Pokemon("Bulbasaur",100,16,evolution=("Ivysaur",130,24),sprite=sprites["bulbasaur"]),
+        Pokemon("Squirtle",100,17,evolution=("Wartortle",130,23),sprite=sprites["squirtle"])
+    ])
+
+# ===============================
+# NPC Dialogue
+# ===============================
+town_dialogues={(0,0):["Welcome to Pallet Town!","Press H at Pokémon Center to heal."],
+                (1,1):["I am training my Pokémon!"]}
+def show_dialogue(x,y):
+    if (x,y) in town_dialogues:
+        for line in town_dialogues[(x,y)]:
+            dialogue_box(line); pygame.display.update(); pygame.time.delay(1200)
+
+# ===============================
+# Main Loop
+# ===============================
+while True:
+    screen.fill(WHITE)
+    keys=pygame.key.get_pressed()
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT: pygame.quit(); sys.exit()
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            x,y=event.pos
+            if mode in ["battle","battle_trainer"] and player_turn:
+                for i,move in enumerate(player_team[0].moves):
+                    if 50+i*180<x<210+i*180 and 400<y<450:
+                        enemy=wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+                        perform_move(player_team[0],enemy,move)
+                        player_turn=False
+                if mode=="battle" and 250<x<400 and 400<y<450:
+                    if pokeballs>0:
+                        pokeballs-=1
+                        chance=0.3+(1-(wild_enemy.hp/wild_enemy.max_hp))
+                        if random.random()<chance:
+                            message=f"You caught {wild_enemy.name}!"; player_team.append(wild_enemy); mode="overworld"
+                        else: message="Failed to catch!"; player_turn=False
+                if 450<x<600 and 400<y<450: mode="overworld"
+
+    # ===============================
+    # Overworld
+    # ===============================
+    if mode=="overworld":
+        draw_map(); draw_gym_switches()
+        if keys[pygame.K_w]: new_y=player_tile[1]-1; new_x=player_tile[0]
+        elif keys[pygame.K_s]: new_y=player_tile[1]+1; new_x=player_tile[0]
+        elif keys[pygame.K_a]: new_x=player_tile[0]-1; new_y=player_tile[1]
+        elif keys[pygame.K_d]: new_x=player_tile[0]+1; new_y=player_tile[1]
+        else: new_x,new_y=player_tile
+        if 0<=new_x<len(map_data[0]) and 0<=new_y<len(map_data) and map_data[new_y][new_x]!="water":
+            player_tile=[new_x,new_y]
+
+        # Player
+        pygame.draw.rect(screen,BLUE,(player_tile[0]*tile_size,player_tile[1]*tile_size,tile_size,tile_size))
+        draw_text(f"Pokéballs: {pokeballs}",10,10); draw_text(f"Badges: {', '.join(badges)}",10,40)
+        draw_text(message,10,70); show_dialogue(player_tile[0],player_tile[1])
+
+        # Gym Switch toggle
+        if keys[pygame.K_e] and (player_tile[0],player_tile[1]) in gym_switches:
+            gym_switches[(player_tile[0],player_tile[1])]=not gym_switches[(player_tile[0],player_tile[1])]
+            message="Switch toggled!"
+
+        # Wild encounter
+        if map_data[player_tile[1]][player_tile[0]]=="grass" and random.random()<0.02:
+            wild_enemy=get_random_wild(); mode="battle"; player_turn=True; message=f"A wild {wild_enemy.name} appeared!"
+
+        # Trainers
+        for trainer in trainers:
+            trainer.move_random()
+            if trainer.active and abs(trainer.pos[0]-player_tile[0])<=1 and abs(trainer.pos[1]-player_tile[1])<=1:
+                current_trainer=trainer; mode="battle_trainer"; player_turn=True; message=f"{trainer.name} challenges you!"
+            if trainer.sprite: screen.blit(trainer.sprite,(trainer.pos[0]*tile_size,trainer.pos[1]*tile_size))
+
+        # Pokémon Center
+        if map_data[player_tile[1]][player_tile[0]]=="center":
+            draw_text("Press H to heal Pokémon",10,100)
+            if keys[pygame.K_h]:
+                for p in player_team: p.hp=p.max_hp
+                message="All Pokémon healed!"
+
+    # ===============================
+    # Battle
+    # ===============================
+    if mode in ["battle","battle_trainer"]:
+        player=player_team[0]; enemy=wild_enemy if mode=="battle" else current_trainer.get_active_pokemon()
+        screen.blit(sprites["battle_bg"],(0,0)); screen.blit(player.sprite,(100,250)); screen.blit(enemy.sprite,(600,100))
+        draw_text(player.name,100,220); draw_text(enemy.name,600,70)
+        draw_hp_bar(100,240,player.hp,player.max_hp); draw_hp_bar(600,80,enemy.hp,enemy.max_hp)
+        for i,move in enumerate(player.moves):
+            pygame.draw.rect(screen,GREEN,(50+i*180,400,160,50)); draw_text(move["name"],60+i*180,415)
+        if mode=="battle": pygame.draw.rect(screen,BLUE,(250,400,150,50)); draw_text("CATCH",270,415)
+        pygame.draw.rect(screen,RED,(450,400,150,50)); draw_text("RUN",490,415)
+        dialogue_box(message)
+
+        if not player_turn and enemy.is_alive():
+            pygame.time.delay(500)
+            perform_move(enemy,player,enemy.moves[0])
+            player_turn=True
+
+        if not enemy.is_alive():
+            if mode=="battle":
+                player_team[0].gain_xp(25); mode="overworld"; message=f"{enemy.name} fainted!"
+            else:
+                current_trainer.next_pokemon()
+                next_enemy=current_trainer.get_active_pokemon()
+                if next_enemy: message=f"{current_trainer.name} sends out {next_enemy.name}!"
+                else:
+                    message=f"You defeated {current_trainer.name}!"
+                    for p in player_team: p.gain_xp(50)
+                    if current_trainer.badge and current_trainer.badge not in badges:
+                        badges.append(current_trainer.badge)
+                        message+=f" You earned {current_trainer.badge}!"
+                    current_trainer.active=False; mode="overworld"
+
+        alive_team=[p for p in player_team if p.is_alive()]
+        if not player.is_alive():
+            if alive_team: player_team[0]=alive_team[0]; message=f"{player_team[0].name} enters!"
+            else: message="All Pokémon fainted! Game Over"; pygame.time.delay(1500); pygame.quit(); sys.exit()
+
+    pygame.display.update()
+    clock.tick(60)
+
+def multi_attack(player_team, enemy_team):
+    for p,e in zip(player_team,enemy_team):
+        perform_move(p,e,p.moves[0])
+        if e.is_alive():
+            perform_move(e,p,e.moves[0])
+
+doors = {(6,2):False}  # Door locked
+gym_switches={(4,4):False}
+
+def check_gym_doors():
+    for door_pos,state in doors.items():
+        if gym_switches[(4,4)]:
+            doors[door_pos] = True  # Open door
+        color=WHITE if doors[door_pos] else BLACK
+        pygame.draw.rect(screen,color,(door_pos[0]*tile_size,door_pos[1]*tile_size,tile_size,tile_size))
+
+quests = {
+    (0,1): {"task":"Bring 3 Pokéballs","reward":5, "completed":False}
+}
+
+def interact_quest(x,y):
+    if (x,y) in quests:
+        q = quests[(x,y)]
+        if not q["completed"]:
+            dialogue_box(f"NPC: {q['task']}") 
+        else:
+            dialogue_box(f"NPC: Thank you! Here’s {q['reward']} Pokéballs")
+
+def shake_sprite(sprite,pos,duration=200):
+    x0,y0=pos
+    for i in range(5):
+        offset = (-5 if i%2==0 else 5)
+        screen.blit(sprite,(x0+offset,y0))
+        pygame.display.update(); pygame.time.delay(duration//5)
+

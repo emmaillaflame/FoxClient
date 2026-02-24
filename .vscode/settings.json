@@ -1,0 +1,20 @@
+class SimpleCPU:
+    def __init__(self):
+        self.registers = {"A": 0, "B": 0}
+        self.pc = 0  # program counter
+
+    def execute(self, instruction):
+        if instruction == "LOAD_A_1":
+            self.registers["A"] = 1
+        elif instruction == "ADD_B":
+            self.registers["A"] += self.registers["B"]
+        elif instruction == "PRINT":
+            print(self.registers["A"])
+
+program = ["LOAD_A_1", "ADD_B", "PRINT"]
+
+cpu = SimpleCPU()
+
+for instr in program:
+    cpu.execute(instr)
+
