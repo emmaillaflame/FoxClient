@@ -1,9 +1,0 @@
-{
-    "recommendations": [
-        "etmoffat.pip-packages",
-        "ms-python.vscode-pylance",
-        "slightc.pip-manager",
-        "petersteiner.pip-installer",
-        "ms-azuretools.vscode-containers"
-    ]
-}
