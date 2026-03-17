@@ -11,25 +11,18 @@ Be aware that some server owners are lazy and do not update their client regular
 Compile it yourself here: https://gitlab.com/lax1dude/eaglercraftx-1.8/
 
 -->
-class SimpleCPU:
-    def __init__(self):
-        self.registers = {"A": 0, "B": 0}
-        self.pc = 0  # program counter
 
-    def execute(self, instruction):
-        if instruction == "LOAD_A_1":
-            self.registers["A"] = 1
-        elif instruction == "ADD_B":
-            self.registers["A"] += self.registers["B"]
-        elif instruction == "PRINT":
-            print(self.registers["A"])
 
-program = ["LOAD_A_1", "ADD_B", "PRINT"]
 
-cpu = SimpleCPU()
 
-for instr in program:
-    cpu.execute(instr)
+
+
+
+
+
+
+
+
 
 <html>
 <head>
@@ -79,15 +72,8 @@ ex){if(typeof $rt_decodeStack==="function"&&err.stack){var stack=$rt_decodeStack
 =new Array(strings.length);for(var i=0;i<strings.length;++i){$rt_stringPool_instance[i]=$rt_intern($rt_str(strings[i]));}}function $rt_s(index){return $rt_stringPool_instance[index];}function $rt_eraseClinit(target){return target.$clinit=function(){};}var $rt_numberConversionView=new DataView(new ArrayBuffer(8));function $rt_doubleToLongBits(n){$rt_numberConversionView.setFloat64(0,n,true);return new Long($rt_numberConversionView.getInt32(0,true),$rt_numberConversionView.getInt32(4,true));}function $rt_longBitsToDouble(n)
 {$rt_numberConversionView.setInt32(0,n.lo,true);$rt_numberConversionView.setInt32(4,n.hi,true);return $rt_numberConversionView.getFloat64(0,true);}function $rt_floatToIntBits(n){$rt_numberConversionView.setFloat32(0,n);return $rt_numberConversionView.getInt32(0);}function $rt_intBitsToFloat(n){$rt_numberConversionView.setInt32(0,n);return $rt_numberConversionView.getFloat32(0);}function $rt_javaException(e){return e instanceof Error&&typeof e.$javaException==='object'?e.$javaException:null;}function $rt_jsException(e)
 {return typeof e.$jsException==='object'?e.$jsException:null;}function $rt_wrapException(err){var ex=err.$javaException;if(!ex){ex=$rt_createException($rt_str("(JavaScript) "+err.toString()));err.$javaException=ex;ex.$jsException=err;$rt_fillStack(err,ex);}return ex;}function $dbg_class(obj){var cls=obj.constructor;var arrayDegree=0;while(cls.$meta&&cls.$meta.item){++arrayDegree;cls=cls.$meta.item;}var clsName="";if(cls===$rt_booleancls()){clsName="boolean";}else if(cls===$rt_bytecls()){clsName="byte";}else if
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; URL=https://itsfoxdev.github.io/FoxClient/" />
-  </head>
-  <body>
-    This website has moved! Taking you to the <a href="https://itsfoxdev.github.io/FoxClient">new site</a> now...
-  </body>
-</html>=function(){var result=[];var n=this;var positive=Long_isPositive(n);if(!positive){n=Long_neg(n);}var radix=new Long(10,0);do {var divRem=Long_divRem(n,radix);result.push(String.fromCharCode(48+divRem[1].lo));n=divRem[0];}while(n.lo!==0||n.hi!==0);result=(result.reverse()).join('');return positive?result:"-"+result;};Long.prototype.valueOf=function(){return Long_toNumber(this);};var Long_ZERO=new Long(0,0);var Long_MAX_NORMAL=1<<18;function Long_fromInt(val){return val>=0?new Long(val,0):new Long(val, -1);}function Long_fromNumber(val)
+(cls===$rt_shortcls()){clsName="short";}else if(cls===$rt_charcls()){clsName="char";}else if(cls===$rt_intcls()){clsName="int";}else if(cls===$rt_longcls()){clsName="long";}else if(cls===$rt_floatcls()){clsName="float";}else if(cls===$rt_doublecls()){clsName="double";}else {clsName=cls.$meta?cls.$meta.name||"a/"+cls.name:"@"+cls.name;}while(arrayDegree-->0){clsName+="[]";}return clsName;}function Long(lo,hi){this.lo=lo|0;this.hi=hi|0;}Long.prototype.__teavm_class__=function(){return "long";};Long.prototype.toString
+=function(){var result=[];var n=this;var positive=Long_isPositive(n);if(!positive){n=Long_neg(n);}var radix=new Long(10,0);do {var divRem=Long_divRem(n,radix);result.push(String.fromCharCode(48+divRem[1].lo));n=divRem[0];}while(n.lo!==0||n.hi!==0);result=(result.reverse()).join('');return positive?result:"-"+result;};Long.prototype.valueOf=function(){return Long_toNumber(this);};var Long_ZERO=new Long(0,0);var Long_MAX_NORMAL=1<<18;function Long_fromInt(val){return val>=0?new Long(val,0):new Long(val, -1);}function Long_fromNumber(val)
 {if(val>=0){return new Long(val|0,val/0x100000000|0);}else {return Long_neg(new Long( -val|0, -val/0x100000000|0));}}function Long_toNumber(val){var lo=val.lo;var hi=val.hi;if(lo<0){lo+=0x100000000;}return 0x100000000*hi+lo;}var $rt_imul=Math.imul||function(a,b){var ah=a>>>16&0xFFFF;var al=a&0xFFFF;var bh=b>>>16&0xFFFF;var bl=b&0xFFFF;return al*bl+(ah*bl+al*bh<<16>>>0)|0;};var $rt_udiv=function(a,b){if(a<0){a+=0x100000000;}if(b<0){b+=0x100000000;}return a/b|0;};var $rt_umod=function(a,b){if(a<0){a+=0x100000000;}if
 (b<0){b+=0x100000000;}return a%b|0;};function $rt_setCloneMethod(target, f){target.bq=f;}
 function $rt_cls(cls){return AAO(cls);}
@@ -31350,7 +31336,7 @@ function $rt_array(cls,data){this.h5=null;this.$id$=0;this.type=cls;this.data=da
 "flyPig","achievement.snipeSkeleton","snipeSkeleton","achievement.diamonds","diamonds","achievement.diamondsToYou","diamondsToYou","achievement.portal","achievement.ghast","ghast","achievement.blazeRod","achievement.potion","achievement.theEnd","theEnd","achievement.theEnd2","theEnd2","achievement.enchantments","enchantments","achievement.overkill","overkill","achievement.bookcase","bookcase","achievement.breedCow","breedCow","achievement.spawnWither","spawnWither","achievement.killWither","killWither","achievement.fullBeacon",
 "fullBeacon","achievement.exploreAllBiomes","exploreAllBiomes","achievement.overpowered","overpowered","ID is already registered: ","Cannot register to reserved id: ","Cannot register null clazz for id: ","stat.killEntity.","stat.entityKill","stat.entityKilledBy.","stat.entityKilledBy","Could not create entity","XPOrb","ThrownEgg","LeashKnot","Painting","Arrow","Snowball","Fireball","SmallFireball","ThrownEnderpearl","EyeOfEnderSignal","ThrownPotion","ThrownExpBottle","ItemFrame","WitherSkull","PrimedTnt","FallingSand",
 "FireworksRocketEntity","ArmorStand","Boat","Mob","Monster","Skeleton","Spider","Giant","Slime","Ghast","PigZombie","Enderman","CaveSpider","Silverfish","Blaze","LavaSlime","EnderDragon","WitherBoss","Bat","Witch","Endermite","Guardian","Sheep","Cow","Chicken","Squid","Wolf","MushroomCow","SnowMan","Ozelot","VillagerGolem","EntityHorse","Rabbit","Villager","EnderCrystal","fSet","Is","In","Vector3f[","CharMatcher.inRange(\'","\', \'","CharMatcher.or(","CharMatcher.ASCII","0٠۰߀०০੦૦୦௦౦೦൦๐໐༠၀႐០᠐᥆᧐᭐᮰᱀᱐꘠꣐꤀꩐０","CharMatcher.DIGIT",
-"CharMatcher.JAVA_DIGIT","CharMatcher.JAVA_LETTER","CharMatcher.JAVA_LETTER_OR_DIGIT","CharMatcher.JAVA_UPPER_CASE","CharMatcher.JAVA_LOWER_CASE","CharMatcher.JAVA_ISO_CONTROL","CharMatcher.INVISIBLE","\u0000­؀؜۝܏ ᠎  ⁦⁧⁨⁩⁪　\ud800﻿￹￺","  ­؄؜۝܏ ᠎‏ ⁤⁦⁧⁨⁩⁯　﻿￹￻","CharMatcher.SINGLE_WIDTH","\u0000־א׳؀ݐ\u0e00Ḁ℀ﭐﹰ｡","ӹ־ת״ۿݿ\u0e7f₯℺\ufdff﻿ￜ","CharMatcher.ANY","CharMatcher.NONE"," 　\r   　\u000b　   　 \t     \u000c 　 　　\n 　","WHITESPACE","IGNORE","REPLACE","REPORT","dig.","step.","dig.glass","step.stone","dig.wood",
+"CharMatcher.JAVA_DIGIT","CharMatcher.JAVA_LETTER","CharMatcher.JAVA_LETTER_OR_DIGIT","CharMatcher.JAVA_UPPER_CASE","CharMatcher.JAVA_LOWER_CASE","CharMatcher.JAVA_ISO_CONTROL","CharMatcher.INVISIBLE","\u0000­؀؜۝܏ ᠎   ⁦⁧⁨⁩⁪　\ud800﻿￹￺","  ­؄؜۝܏ ᠎‏ ⁤⁦⁧⁨⁩⁯　﻿￹￻","CharMatcher.SINGLE_WIDTH","\u0000־א׳؀ݐ\u0e00Ḁ℀ﭐﹰ｡","ӹ־ת״ۿݿ\u0e7f₯℺\ufdff﻿ￜ","CharMatcher.ANY","CharMatcher.NONE"," 　\r   　 \u000b　   　 \t     \u000c 　 　　 \n 　","WHITESPACE","IGNORE","REPLACE","REPORT","dig.","step.","dig.glass","step.stone","dig.wood",
 "dig.stone","random.anvil_land","mob.slime.big","mob.slime.small","GRANITE","granite","GRANITE_SMOOTH","smooth_granite","graniteSmooth","DIORITE","diorite","DIORITE_SMOOTH","smooth_diorite","dioriteSmooth","ANDESITE","andesite","ANDESITE_SMOOTH","smooth_andesite","andesiteSmooth","DIRT","COARSE_DIRT","coarse_dirt","coarse","PODZOL","podzol","SAND","RED_SAND","red_sand","NONE","none","Unable to get X-rotated facing of ","Unable to get Z-rotated facing of ","Unable to get CW facing for axis ","Unable to get Y-rotated facing of ",
 "Unable to get CCW facing of ","DOWN","down","UP","NORTH","SOUTH","WEST","EAST","HEAD","head","FOOT","foot","NORTH_SOUTH","north_south","EAST_WEST","east_west","ASCENDING_EAST","ascending_east","ASCENDING_WEST","ascending_west","ASCENDING_NORTH","ascending_north","ASCENDING_SOUTH","ascending_south","SOUTH_EAST","south_east","SOUTH_WEST","south_west","NORTH_WEST","north_west","NORTH_EAST","north_east","DEAD_BUSH","dead_bush","GRASS","tall_grass","FERN","normal","STICKY","sticky","TOP","top","BOTTOM","bottom",
 "STRAIGHT","straight","INNER_LEFT","inner_left","INNER_RIGHT","inner_right","OUTER_LEFT","outer_left","OUTER_RIGHT","outer_right","SIDE","side","right","left","LEFT","RIGHT","lower","UPPER","LOWER","Invalid entityFacing ","Invalid facing: "," for facing ","DOWN_X","down_x","UP_Z","up_z","UP_X","up_x","DOWN_Z","down_z","COBBLESTONE","cobble","STONEBRICK","stone_brick","MOSSY_STONEBRICK","mossy_brick","mossybrick","CRACKED_STONEBRICK","cracked_brick","crackedbrick","CHISELED_STONEBRICK","chiseled_brick","chiseledbrick",
